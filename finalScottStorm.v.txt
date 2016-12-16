@@ -1,0 +1,352 @@
+module finalScottStorm(clk, vgaclk, R, G, B, vga_h_sync, vga_v_sync, blank_n, mRI, mLI, smile, pew);
+input clk;
+input mRI;
+input mLI;
+input smile;
+input pew;
+reg [9:0]xCount;
+reg [9:0]yCount;
+
+output reg vgaclk;
+
+always @(posedge clk)
+	vgaclk <= !vgaclk;
+hv_sync RGB(vgaclk, vga_h_sync, vga_v_sync, blank_n);
+output vga_h_sync, vga_v_sync, blank_n;
+output reg [7:0] R;
+output reg [7:0] G;
+output reg [7:0] B;
+
+//Variables for our delay, x and y positions for all our ships and our shot
+reg [20:0]delay = 10'd1;
+reg[9:0] xPos = 10'd400;
+reg[9:0] xPos2 = 10'd440;
+reg[9:0] sPosX = 10'd420;
+reg[9:0] sPosX2 = 10'd430;
+reg[9:0] sPosY = 10'd785;
+reg[9:0] sPosY2 = 10'd795; 
+reg[9:0] bad1X1 = 10'd300;
+reg[9:0] bad1X2 = 10'd340;
+reg[9:0] bad1Y1 = 10'd40;
+reg[9:0] bad1Y2 = 10'd90;
+reg[9:0] bad2X1 = 10'd360;
+reg[9:0] bad2X2 = 10'd400;
+reg[9:0] bad2Y1 = 10'd40;
+reg[9:0] bad2Y2 = 10'd90;
+reg[9:0] bad3X1 = 10'd420;
+reg[9:0] bad3X2 = 10'd460;
+reg[9:0] bad3Y1 = 10'd40;
+reg[9:0] bad3Y2 = 10'd90;
+reg[9:0] bad4X1 = 10'd480;
+reg[9:0] bad4X2 = 10'd520;
+reg[9:0] bad4Y1 = 10'd40;
+reg[9:0] bad4Y2 = 10'd90;
+reg[9:0] bad5X1 = 10'd300;
+reg[9:0] bad5X2 = 10'd340;
+reg[9:0] bad5Y1 = 10'd110;
+reg[9:0] bad5Y2 = 10'd160;
+reg[9:0] bad6X1 = 10'd360;
+reg[9:0] bad6X2 = 10'd400;
+reg[9:0] bad6Y1 = 10'd110;
+reg[9:0] bad6Y2 = 10'd160;
+reg[9:0] bad7X1 = 10'd420;
+reg[9:0] bad7X2 = 10'd460;
+reg[9:0] bad7Y1 = 10'd110;
+reg[9:0] bad7Y2 = 10'd160;
+reg[9:0] bad8X1 = 10'd480;
+reg[9:0] bad8X2 = 10'd520;
+reg[9:0] bad8Y1 = 10'd110;
+reg[9:0] bad8Y2 = 10'd160;
+
+//Will draw to the screen if the currentPixel is between the variables for all ships
+wire box = (xCount>xPos) && (xCount<xPos2) && (yCount > 10'd410) && (yCount < 10'd450);
+wire shot = (xCount>sPosX) && (xCount<sPosX2) && (yCount > sPosY) && (yCount < sPosY2);
+
+wire eye1 = (xCount > 10'd649) && (xCount < 10'd689) && (yCount > 10'd190) && (yCount < 10'd240);
+wire eye2 = (xCount > 10'd709) && (xCount < 10'd749) && (yCount > 10'd190) && (yCount < 10'd240);
+wire mouthLine = (xCount > 10'd649) && (xCount < 10'd749) && (yCount > 10'd310) && (yCount < 10'd350);
+wire corner1 = (xCount > 10'd609) && (xCount < 10'd649) && (yCount > 10'd270) && (yCount < 10'd310);
+wire corner2 = (xCount > 10'd749) && (xCount < 10'd789) && (yCount > 10'd270) && (yCount < 10'd310);
+wire bad1 = (xCount > bad1X1) && (xCount <bad1X2) && (yCount > bad1Y1) && (yCount <bad1Y2);
+wire bad2 = (xCount > bad2X1) && (xCount <bad2X2) && (yCount > bad2Y1) && (yCount <bad2Y2);
+wire bad3 = (xCount > bad3X1) && (xCount <bad3X2) && (yCount > bad3Y1) && (yCount <bad3Y2);
+wire bad4 = (xCount > bad4X1) && (xCount <bad4X2) && (yCount > bad4Y1) && (yCount <bad4Y2);
+wire bad5 = (xCount > bad5X1) && (xCount <bad5X2) && (yCount > bad5Y1) && (yCount <bad5Y2);
+wire bad6 = (xCount > bad6X1) && (xCount <bad6X2) && (yCount > bad6Y1) && (yCount <bad6Y2);
+wire bad7 = (xCount > bad7X1) && (xCount <bad7X2) && (yCount > bad7Y1) && (yCount <bad7Y2);
+wire bad8 = (xCount > bad8X1) && (xCount <bad8X2) && (yCount > bad8Y1) && (yCount <bad8Y2);
+
+
+
+always @(posedge vgaclk)
+begin
+delay = delay + 1'd1;
+if(!smile)
+begin
+delay = 10'd1;
+ xPos = 10'd400;
+ xPos2 = 10'd440;
+ sPosX = 10'd420;
+ sPosX2 = 10'd430;
+ sPosY = 10'd785;
+sPosY2 = 10'd795; 
+ bad1X1 = 10'd300;
+bad1X2 = 10'd340;
+ bad1Y1 = 10'd40;
+ bad1Y2 = 10'd90;
+ bad2X1 = 10'd360;
+ bad2X2 = 10'd400;
+ bad2Y1 = 10'd40;
+ bad2Y2 = 10'd90;
+ bad3X1 = 10'd420;
+ bad3X2 = 10'd460;
+ bad3Y1 = 10'd40;
+ bad3Y2 = 10'd90;
+ bad4X1 = 10'd480;
+ bad4X2 = 10'd520;
+ bad4Y1 = 10'd40;
+ bad4Y2 = 10'd90;
+ bad5X1 = 10'd300;
+ bad5X2 = 10'd340;
+ bad5Y1 = 10'd110;
+ bad5Y2 = 10'd160;
+ bad6X1 = 10'd360;
+ bad6X2 = 10'd400;
+ bad6Y1 = 10'd110;
+ bad6Y2 = 10'd160;
+ bad7X1 = 10'd420;
+ bad7X2 = 10'd460;
+ bad7Y1 = 10'd110;
+ bad7Y2 = 10'd160;
+ bad8X1 = 10'd480;
+ bad8X2 = 10'd520;
+bad8Y1 = 10'd110;
+bad8Y2 = 10'd160;
+end
+if(!mRI && xPos2<10'd784 && (delay ==2000000 || delay == 10000))
+//begin
+//if(xPos2<10'd656)
+begin
+xPos = xPos + 10'd3;
+xPos2 = xPos2 + 10'd3;
+sPosX = sPosX + 10'd3;
+sPosX2 = sPosX2 + 10'd3;
+end
+//else
+//begin
+//xPos = 10'd616;
+//xPos2 = 10'd656;
+//end
+//end
+if(!mLI && xPos>10'd154 && (delay == 20000 || delay ==10000))
+begin
+//if(xPos>10'd16)
+//begin
+xPos = xPos - 10'd3;
+xPos2 = xPos2 - 10'd3;
+sPosX = sPosX - 10'd3;
+sPosX2 = sPosX2 - 10'd3;
+end
+//else
+//begin
+//xPos = 10'd16;
+//xPos2 = 10'd56;
+//end
+
+//end
+
+//Assigns colors to draw the ships using RGB values
+	if(bad1X1 == 1 && bad2X1 == 1 && bad3X1 == 1 && bad4X1 == 1 && bad5X1 == 1 && bad6X1 == 1 && bad7X1 == 1 && 
+	bad8X1 == 1)
+	begin
+	if(eye1)
+	begin
+		R <= 223;
+		G <= 255;
+		B <= 0;
+	end
+	if(eye2)
+	begin
+		R <= 223;
+		G <= 255;
+		B <= 0;
+	end
+	if(mouthLine)
+	begin
+		R <= 223;
+		G <= 255;
+		B <= 0;
+	end
+	if(corner1)
+	begin
+		R <= 223;
+		G <= 255;
+		B <= 0;
+	end
+	if(corner2)
+	begin
+		R <= 223;
+		G <= 255;
+		B <= 0;
+	end
+	end
+	
+	if(sPosY<780 &&(delay == 200 || delay == 300 || delay == 400 || delay == 500 || delay == 600))
+	begin
+	sPosY = sPosY - 1'd5;
+	sPosY2 = sPosY2 - 1'd5;
+	end
+	if(!pew)
+	begin
+	sPosY = 10'd410;
+	sPosY2 = 10'd420;
+	end
+	if(box)
+	begin
+		R <= 223;
+		G <= 255;
+		B <= 0;
+	end
+	if(bad1)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad2)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad3)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad4)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad5)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad6)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad7)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(bad8)
+	begin
+	R <=250;
+	G <=0;
+	B <=0;
+	end
+	if(shot)
+	begin
+	R<= 0;
+	G<=255;
+	B<=0;
+	end
+	else
+	//Draws the background blue if it is not any of the ships or shot or smiley face
+	if(!box && !bad1 && !bad2 && !bad3 && !bad4 && !bad5 && !bad6 && !bad7 && !bad8 && !shot && !eye1 && !eye2 &&
+	!corner1 && !corner2 && !mouthLine)
+	begin
+		R <= 0;
+		G <= 0;
+		B <= 255;
+	end
+	
+	//If the shot comes into contact with a bad guy the bad guy moves off the screen into the porch 
+	if(bad1 && shot)
+	begin
+	bad1X1 = 1;
+	bad1X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad2 && shot)
+	begin
+	bad2X1 = 1;
+	bad2X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad3 && shot)
+	begin
+	bad3X1 = 1;
+	bad3X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad4 && shot)
+	begin
+	bad4X1 = 1;
+	bad4X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad5 && shot)
+	begin
+	bad5X1 = 1;
+	bad5X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad6 && shot)
+	begin
+	bad6X1 = 1;
+	bad6X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad7 && shot)
+	begin
+	bad7X1 = 1;
+	bad7X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+	if(bad8 && shot)
+	begin
+	bad8X1 = 1;
+	bad8X2 = 2;
+	sPosY = 10'd785;
+	sPosY2 = 10'd795;
+	end
+end
+
+
+//Counters for drawing the screen
+always @(posedge vgaclk)
+begin
+	if(xCount == 10'd799)
+		xCount <= 10'd0;
+	else
+		xCount <= xCount + 1'b1;
+end
+
+always @(posedge vgaclk)
+begin
+	if(xCount == 10'd799)
+		if(yCount == 10'd523)
+			yCount <= 10'd0;
+	else
+		yCount <= yCount + 1'b1;
+end
+
+endmodule
